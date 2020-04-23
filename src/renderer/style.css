@@ -1,0 +1,34 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", "Helvetica Neue", HelveticaNeue, "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", Verdana, "メイリオ", Meiryo, sans-serif;
+}
+
+b,
+strong,
+.bold {
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI semibold", "Helvetica Neue", HelveticaNeue, "游ゴシック体", YuGothic, "游ゴシック", "Yu Gothic", "Segoe UI", Verdana, "メイリオ", Meiryo, sans-serif;
+}
+
+#app {
+    width: 95vw;
+    height: 95vh;
+}
+
+#contents {
+    width: 95vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#image {
+    text-align: center;
+}
+
+#header_text,
+#footer_text {
+    text-align: center;
+    font-size: 35px;
+    margin-block-start: 0.5rem;
+    margin-block-end: 0.5rem;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "imhere",
+  "version": "0.0.1",
+  "description": "App that make being at home fun.",
+  "author": "OBATA Miki",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+  },
+  "dependencies": {
+    "css-loader": "^3.5.2",
+    "electron-store": "^5.1.1",
+    "local-devices": "^3.0.0",
+    "source-map-support": "^0.5.16",
+    "style-loader": "^1.1.4"
+  },
+  "devDependencies": {
+    "electron": "8.2.0",
+    "electron-builder": "^22.4.1",
+    "electron-webpack": "^2.8.2",
+    "webpack": "~4.42.1"
+  }
+}
