@@ -3,7 +3,9 @@
 // import 文を使ってstyle.cssファイルを読み込む。
 import "./style.css";
 
-const image = './sleeping_cat.jpg';
+import { getStatic } from  './static.js'
+
+const image = getStatic('./sleeping_cat.jpg');
 
 var m = document.getElementById("app");
 let html = '<div id="contents">';
@@ -32,33 +34,33 @@ is.addEventListener('click', function(clickEvent) {
     canreaction = false;
     if (!beflag) return;
     if (Math.random() < 0.05) {
-        is.src = './sleeping_cat_eye.jpg'
+        is.src = getStatic('./sleeping_cat_eye.jpg')
     } else {
         let pictindex = Math.floor(Math.random() * 4);
         switch (pictindex) {
             case 0:
-                is.src = './sleeping_cat_tail.jpg'
+                is.src = getStatic('./sleeping_cat_tail.jpg')
                 break;
 
             case 1:
-                is.src = './sleeping_cat_hand.jpg'
+                is.src = getStatic('./sleeping_cat_hand.jpg')
                 break;
 
             case 2:
-                is.src = './sleeping_cat_left_ear.jpg'
+                is.src = getStatic('./sleeping_cat_left_ear.jpg')
                 break;
 
             case 3:
-                is.src = './sleeping_cat_right_ear.jpg'
+                is.src = getStatic('./sleeping_cat_right_ear.jpg')
                 break;
 
             default:
-                is.src = './sleeping_cat.jpg'
+                is.src = getStatic('./sleeping_cat.jpg')
                 break;
         }
     }
     setTimeout(() => {
-        is.src = './sleeping_cat.jpg'
+        is.src = getStatic('./sleeping_cat.jpg')
             //canreaction = true;
     }, 800);
     setTimeout(() => {
@@ -87,13 +89,13 @@ require('electron').ipcRenderer.on('ping', (event, message, be) => {
         case ex.consider:
             i.style.opacity = 0.5;
             beflag = true;
-            f.textContent = 'いま #ここにいる';
+            f.textContent = 'いま ここにいる';
             break;
 
         case ex.exist:
             i.style.opacity = 1.0;
             beflag = true;
-            f.textContent = 'いま #ここにいる';
+            f.textContent = 'いま ここにいる';
             break;
 
         default:

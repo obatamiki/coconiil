@@ -13,6 +13,8 @@ const Store = require('electron-store');
 
 const store = new Store();
 
+const app_name = 'ここにいる';
+
 // save
 let sp_mac = '';
 let amount_time = 0;
@@ -34,9 +36,9 @@ function createMainWindow() {
         }
     })
 
-    if (isDevelopment) {
-        //window.webContents.openDevTools()
-    }
+    //if (isDevelopment) {
+    //window.webContents.openDevTools()
+    //}
 
     if (isDevelopment) {
         window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
@@ -142,9 +144,15 @@ function menu(win) {
         {
             label: 'App',
             submenu: [
-                { role: 'about' },
+                (isMac ? { role: 'about' } :
+                    {
+                        label: app_name + " について...",
+                        click: () => {
+                            about_dialog(win);
+                        }
+                    }),
                 {
-                    label: '選択中MACアドレスの確認と再設定',
+                    label: '選択中MACアドレスの確認と再設定...',
                     click: () => {
                         select_mac_flag = true;
                         arp_scan(win);
@@ -246,7 +254,7 @@ function select_mac_dialog(win, str) {
         type: 'question',
         buttons: str,
         title: 'MACアドレスの選択',
-        message: '同一LANに接続中の機器からあなたの携帯端末のMACアドレスを選択してください',
+        message: '同一LANに接続中の機器から あなたの携帯端末のMACアドレスを選択してください',
         detail: detail
     };
     let choice = null;
@@ -268,4 +276,13 @@ function select_mac_dialog(win, str) {
         if (sp_mac) select_mac_flag = false;
     }
     return choice;
+}
+
+function about_dialog(win) {
+    var options = {
+        type: 'info',
+        title: app_name + " について",
+        message: app_name + " (C)2020 OBATA Miki",
+    };
+    dialog.showMessageBoxSync(win, options);
 }

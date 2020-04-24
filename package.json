@@ -1,9 +1,30 @@
 {
-  "name": "imhere",
+  "name": "coconiil",
   "version": "0.0.1",
   "description": "App that make being at home fun.",
   "author": "OBATA Miki",
   "license": "MIT",
+  "build": {
+    "productName": "ここにいる",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+  },
+  "electronWebpack": {
+    "title": "ここにいる"
+  },
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
