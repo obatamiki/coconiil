@@ -20,7 +20,7 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
-    },
+    }
   },
   "electronWebpack": {
     "title": "ここにいる"
