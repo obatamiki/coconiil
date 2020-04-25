@@ -1,46 +1,53 @@
-# electron-webpack-quick-start
-> A bare minimum project structure to get started developing with [`electron-webpack`](https://github.com/electron-userland/electron-webpack).
+# ここにいる
+> It means "I'm Here" in Japanese.
 
-Thanks to the power of `electron-webpack` this template comes packed with...
+在宅時間の累計を記録することで、在宅にちょっとした達成感をもたらすデスクトップアプリです。
+ネコが、あなたと共に過ごした時間を覚えていてくれます。
+アプリにスマートフォンのMACアドレスを登録し、アプリを起動しているPC(Mac)と同一LANに接続している間を在宅と判定します。
 
-* Use of [`webpack-dev-server`](https://github.com/webpack/webpack-dev-server) for development
-* HMR for both `renderer` and `main` processes
-* Use of [`babel-preset-env`](https://github.com/babel/babel-preset-env) that is automatically configured based on your `electron` version
-* Use of [`electron-builder`](https://github.com/electron-userland/electron-builder) to package and build a distributable electron application
+# 動作環境
 
-Make sure to check out [`electron-webpack`'s documentation](https://webpack.electron.build/) for more details.
+* Windows 7以降 32bit,64bit(インストーラがインストール時に自動判別)
+* macOS 10.10 (Yosemite) 以降 64bit
 
-## Getting Started
-Simply clone down this repository, install dependencies, and get started on your application.
+# インストール・アンインストール
 
-The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm`.
+一般的なインストーラの形式でインストールします。
+アンインストールも一般的な方法で行います。
 
-```bash
-# create a directory of your choice, and copy template using curl
-mkdir new-electron-webpack-project && cd new-electron-webpack-project
-curl -fsSL https://github.com/electron-userland/electron-webpack-quick-start/archive/master.tar.gz | tar -xz --strip-components 1
+# 使い方
 
-# or copy template using git clone
-git clone https://github.com/electron-userland/electron-webpack-quick-start.git
-cd electron-webpack-quick-start
-rm -rf .git
+スマートフォンをPC(Mac)と同一のLANに接続してください。
+無線LANルータが一台だけの環境なら、両者をインターネット接続すれば自然とそうなるはずです。
 
-# install dependencies
-yarn
-```
+初回起動時にはMACアドレスを設定するダイアログが自動的に開きますので、スマートフォンのMACアドレスを指定してください。
 
-### Development Scripts
+あとは自動的に在宅時間累計がカウントされていきます。
 
-```bash
-# run application in development mode
-yarn dev
+初回起動時以降、対象MACアドレスはメニューから変更できます。
 
-# compile source code and create webpack output
-yarn compile
+# 補足
 
-# `yarn compile` & create build with electron-builder
-yarn dist
+iOSやAndroidの設定画面上で"Wi-Fiアドレス"や"Wi-Fi MACアドレス"となっている文字列が、ここで言うMACアドレスです。
 
-# `yarn compile` & create unpacked build with electron-builder
-yarn dist:dir
-```
+スマートフォン側の、MACアドレスをランダム化する機能は無効にする（デバイスのMACアドレスを使用する）必要があります。
+Android 10 から、MACアドレスのランダム化は有効がデフォルトになっているようです。
+
+スマートフォンをスリープしていても動作に支障はないはずですが、アプリ側に認識されない場合はスリープ解除すると認識されるかもしれません。
+
+Wi-Fi通信が安定した環境での使用を推奨します。
+Wi-Fi通信が不安定な環境だと動作が不安定になるようです。
+
+「そばにいる」ことをソフトウェア的に確認できなかった場合も、本当はそばにいたのにうまく検知できなかっただけと考えて甘めの判定で時間計算しています。
+
+アプリを起動しているPC(Mac)のスリープやシャットダウンを躊躇する必要はありません。
+アプリが動作していなかった時間は、そばにいた時間とみなして次回アプリ起動時に加算します（ただし上限があります）。
+
+# Author
+
+* OBATA Miki
+
+# License
+
+このソフトウェアは MIT ライセンスです。
+This software is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).

@@ -6,8 +6,7 @@ import { format as formatUrl } from 'url'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-
-const LocalDevices = require('local-devices');
+const find = require('local-devices');
 
 const Store = require('electron-store');
 
@@ -22,6 +21,7 @@ let lasttime = -1;
 let select_mac_flag = true;
 let arpmac = [];
 let consider_time = 0;
+let findable = true;
 
 // 最初のいる判定が出るまではlasttimeを更新しないことで、アプリを起動していない不在期間の消滅を防ぐ
 let firstexist = false;
@@ -113,7 +113,9 @@ app.on('ready', () => {
 
     //main loop
     (function loop() {
-        arp_scan(mainWindow);
+        if (findable) {
+            arp_scan(mainWindow);
+        }
         increment_time(mainWindow, arpmac);
         setTimeout(loop, 5000);
     })();
@@ -144,13 +146,13 @@ function menu(win) {
         {
             label: 'App',
             submenu: [
-                (isMac ? { role: 'about' } :
-                    {
+                ...(isMac ? [] :
+                    [{
                         label: app_name + " について...",
                         click: () => {
                             about_dialog(win);
                         }
-                    }),
+                    }]),
                 {
                     label: '選択中MACアドレスの確認と再設定...',
                     click: () => {
@@ -158,8 +160,16 @@ function menu(win) {
                         arp_scan(win);
                     }
                 },
+                ...(isDevelopment ?
+                    [{
+                        label: "セーブデータ削除して終了",
+                        click: () => {
+                            store.clear();
+                            app.quit();
+                        }
+                    }] : []),
                 //{ label: 'MACアドレスの再設定', click: () => { console.log('MACアドレスの再設定') } },
-                isMac ? { role: 'close' } : { role: 'quit' }
+                ...(isMac ? [] : [{ role: 'quit' }])
             ]
         },
     ]
@@ -169,23 +179,30 @@ function menu(win) {
 }
 
 function arp_scan(win) {
-    LocalDevices().then(arp => {
+    findable = false;
+    find().then(arp => {
+        findable = true;
         arpmac = [];
         for (let j = 0; j < arp.length; j++) {
             let mac = arp[j]['mac'];
             arpmac.push(mac);
         }
-        arpmac.push('再スキャン');
-        arpmac.push('cancel');
+        //arpmac.push('再スキャン');
+        //arpmac.push('cancel');
+        console.log(arpmac);
 
         if (select_mac_flag) {
             let retval = select_mac_dialog(win, arpmac);
             if (retval != null) sp_mac = retval;
         }
         //increment_time(win, arpmac);
-    }).catch(error => {
-        alert(error.message);
-    })
+    }).catch((err) => {
+        console.log(err);
+        //app.relaunch();
+        app.quit();
+        //var key = require.resolve('local-devices');
+        //delete require.cache[key];
+    });
 
     //let str = 'yahoo';
     //console.log('str1= ' + flag);
@@ -249,31 +266,42 @@ function format_time(ms) {
 
 function select_mac_dialog(win, str) {
     let detail = '';
-    if (sp_mac) detail += '選択中のMACアドレス ' + sp_mac;
+    if (sp_mac) detail += '現在の対象MACアドレス ' + sp_mac;
+
+    let shortstr = [];
+    for (let i = 0; i < str.length; i++) {
+        shortstr.push('〜' + str[i].slice(-5));
+    }
+    shortstr.push('再スキャン');
+
+    if (process.platform == 'win32') {
+        shortstr.push('cancel');
+    } else {
+        shortstr.push('キャンセル');
+    }
+
     var options = {
         type: 'question',
-        buttons: str,
+        buttons: shortstr,
         title: 'MACアドレスの選択',
-        message: '同一LANに接続中の機器から あなたの携帯端末のMACアドレスを選択してください',
+        message: '「ここにいる」判定の対象とする、あなたの携帯端末のMACアドレス末尾を選択してください',
         detail: detail
     };
     let choice = null;
 
     let index = dialog.showMessageBoxSync(win, options);
 
-    // -2は再スキャンとキャンセルのボタン追加分の調整
-    if (index < str.length - 2) {
+    if (index < str.length) {
         choice = str[index];
         store.set('mac', choice);
         console.log('save mac', choice);
         select_mac_flag = false;
-    } else if (index === str.length - 2) {
+    } else if (index === str.length) {
         // rescan
         console.log('rescan');
     } else {
         // cancel
-        // macアドレス設定済みならselectmacflagを下ろす
-        if (sp_mac) select_mac_flag = false;
+        select_mac_flag = false;
     }
     return choice;
 }
