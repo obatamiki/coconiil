@@ -5,7 +5,7 @@
   "author": "OBATA Miki",
   "license": "MIT",
   "build": {
-    "productName": "ここにいる",
+    "productName": "Coconiil",
     "win": {
       "target": [
         {
